@@ -9,7 +9,7 @@ function HomePage(props) {
 
   const handleJoin = () => {
     axios
-      .get("http://localhost:3000/join")
+      .get("https://aiclass-mini.herokuapp.com/join")
       .then(function (response) {
         // handle success
         console.log(response);

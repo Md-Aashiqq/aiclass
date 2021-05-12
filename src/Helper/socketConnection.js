@@ -11,14 +11,14 @@ const initializePeerConnection = () => {
 
   return new Peer();
 };
-const websocket = "http://localhost:3000";
+const websocket = "https://aiclass-mini.herokuapp.com/";
 
 let socketInstance = null;
 let peers = {};
 const initializeSocketConnection = () => {
   console.log("socket");
   // return io(websocket)
-  return io("http://localhost:3000");
+  return io("https://aiclass-mini.herokuapp.com/");
 };
 
 class Connection {
