@@ -19,11 +19,12 @@ const initializeSocketConnection = () => {
   console.log("socket");
   // return io(websocket)
   return io("https://aiclass-mini.herokuapp.com", {
-  withCredentials: true,
-  extraHeaders: {
-    "my-custom-header": "abcd"
-  }
-})
+    withCredentials: true,
+    extraHeaders: {
+      "my-custom-header": "abcd",
+    },
+  });
+};
 
 class Connection {
   videoContainer = {};
