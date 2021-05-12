@@ -23,7 +23,8 @@ function MeetingPage() {
   const [camStatus, setCamStatus] = useState(true);
   const [streaming, setStreaming] = useState(false);
   const [chatToggle, setChatToggle] = useState(false);
-  const [userDetails, setUserDetails] = useState(null);
+  const [userDetails, setUserDetails] = useState("ashick");
+  
   const [displayStream, setDisplayStream] = useState(false);
   const [messages, setMessages] = useState([]);
 
