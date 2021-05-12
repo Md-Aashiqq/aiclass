@@ -11,15 +11,19 @@ const initializePeerConnection = () => {
 
   return new Peer();
 };
-const websocket = "https://aiclass-mini.herokuapp.com/";
+const websocket = "https://aiclass-mini.herokuapp.com/:50713";
 
 let socketInstance = null;
 let peers = {};
 const initializeSocketConnection = () => {
   console.log("socket");
   // return io(websocket)
-  return io("https://aiclass-mini.herokuapp.com/:21692");
-};
+  return io("https://aiclass-mini.herokuapp.com", {
+  withCredentials: true,
+  extraHeaders: {
+    "my-custom-header": "abcd"
+  }
+})
 
 class Connection {
   videoContainer = {};
