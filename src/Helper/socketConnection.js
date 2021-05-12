@@ -18,7 +18,7 @@ let peers = {};
 const initializeSocketConnection = () => {
   console.log("socket");
   // return io(websocket)
-  return io("https://aiclass-mini.herokuapp.com/");
+  return io("https://aiclass-mini.herokuapp.com/:21692");
 };
 
 class Connection {
@@ -42,6 +42,7 @@ class Connection {
   }
 
   initializeSocketEvents = () => {
+    console.log(this.socket);
     this.socket.on("connect", () => {
       console.log("socket connected");
     });
