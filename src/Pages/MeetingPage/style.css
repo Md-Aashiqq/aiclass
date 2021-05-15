@@ -17,11 +17,18 @@
   color: #ffffff;
 }
 
+.menu__icon {
+  display: none;
+}
+
 .meeting__header {
   grid-area: header;
   padding: 1rem;
   background-color: #000000;
   color: #10b664;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .side__nav {
   grid-area: sidenav;
@@ -177,4 +184,50 @@ span.active {
 }
 .controller__container .call__icon {
   color: #b92424;
+}
+
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+  .side__nav {
+    display: none;
+  }
+  .chart__section {
+    display: none;
+  }
+  .meeting__container {
+    display: block;
+  }
+  .menu__icon {
+    display: block;
+  }
+  .meeting__header {
+    height: 10vh;
+  }
+  .main__container {
+    margin: 0;
+    border-radius: 0;
+    height: 80vh;
+  }
+  .btn__section {
+    height: 10vh;
+  }
+  .vidoe__section div {
+    display: grid;
+    grid-template-columns: repeat(2, 50%);
+    height: 150px;
+  }
+  .phone__menu {
+    display: flex;
+    z-index: 10;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .phone__menu div {
+    border-bottom: 2px solid #10b664;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 10px;
+  }
 }

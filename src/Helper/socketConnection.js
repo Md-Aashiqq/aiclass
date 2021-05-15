@@ -11,14 +11,15 @@ const initializePeerConnection = () => {
 
   return new Peer();
 };
-const websocket = "https://aiclass-mini.herokuapp.com/:50713";
+const websocket = "https://localhost:3000";
+// const websocket = "https://aiclass-mini.herokuapp.com/:50713";
 
 let socketInstance = null;
 let peers = {};
 const initializeSocketConnection = () => {
   console.log("socket");
   // return io(websocket)
-  return io("https://aiclass-mini.herokuapp.com", {
+  return io(websocket, {
     withCredentials: true,
     extraHeaders: {
       "my-custom-header": "abcd",

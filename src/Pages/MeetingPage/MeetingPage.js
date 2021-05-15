@@ -13,6 +13,7 @@ import MicOffIcon from "@material-ui/icons/MicOff";
 import VideocamIcon from "@material-ui/icons/Videocam";
 import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import ChatIcon from "@material-ui/icons/Chat";
+import MenuIcon from "@material-ui/icons/Menu";
 
 import "./style.css";
 function MeetingPage() {
@@ -23,10 +24,14 @@ function MeetingPage() {
   const [camStatus, setCamStatus] = useState(true);
   const [streaming, setStreaming] = useState(false);
   const [chatToggle, setChatToggle] = useState(false);
-  const [userDetails, setUserDetails] = useState("ashick");
-  
+  const [userDetails, setUserDetails] = useState(null);
   const [displayStream, setDisplayStream] = useState(false);
   const [messages, setMessages] = useState([]);
+
+  const [displayMenu, setDisplayMenu] = useState(false);
+  const [showVideo, setShowVideo] = useState(true);
+  const [showChart, setShowChart] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   const [wholeRoomID, setwholeRoomID] = useState("");
 
@@ -39,6 +44,16 @@ function MeetingPage() {
   useEffect(() => {
     if (userDetails) startConnection();
   }, [userDetails]);
+
+  useEffect(() => {
+    if (window.innerWidth > 400) {
+      setShowChart(true);
+      setShowChat(true);
+    } else {
+      setShowChart(false);
+      setShowChat(false);
+    }
+  }, []);
 
   const startConnection = () => {
     let params = { quality: 12 };
@@ -70,7 +85,49 @@ function MeetingPage() {
     <div className="meeting__container">
       <div className="meeting__header">
         <h1>Realification</h1>
+        <MenuIcon
+          className="menu__icon"
+          onClick={() => {
+            setDisplayMenu(!displayMenu);
+          }}
+        />
       </div>
+
+      {displayMenu && (
+        <div className="phone__menu">
+          <div
+            onClick={() => {
+              setShowChart(false);
+              setShowChat(false);
+              setShowVideo(true);
+            }}
+          >
+            {" "}
+            Vidoe{" "}
+          </div>
+          <div
+            onClick={() => {
+              setShowChart(true);
+              setShowChat(false);
+              setShowVideo(false);
+            }}
+          >
+            {" "}
+            Chart{" "}
+          </div>
+          <div
+            onClick={() => {
+              setShowChart(false);
+              setShowChat(true);
+              setShowVideo(false);
+            }}
+          >
+            {" "}
+            Chat{" "}
+          </div>
+        </div>
+      )}
+
       <div className="side__nav">
         <span className="active">
           <VideocamIcon />
@@ -82,58 +139,73 @@ function MeetingPage() {
           <VideocamIcon />
         </span>
       </div>
-      <div className="main__container">
-        <div className="mini__nav">
-          <div className="option__section">
-            <div className="select__icon">
-              <div className="people">p</div>
-              <div className="person__count">
-                <div>4</div>{" "}
-                <svg
-                  className="arrow__icon"
-                  viewBox="0 0 17 19"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8.5 3.95837V15.0417"
-                    stroke="white"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M13.4582 9.5L8.49984 15.0417L3.5415 9.5"
-                    stroke="white"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
+      {showVideo && (
+        <div className="main__container">
+          <div className="mini__nav">
+            <div className="option__section">
+              <div className="select__icon">
+                <div className="people">p</div>
+                <div className="person__count">
+                  <div>4</div>{" "}
+                  <svg
+                    className="arrow__icon"
+                    viewBox="0 0 17 19"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8.5 3.95837V15.0417"
+                      stroke="white"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M13.4582 9.5L8.49984 15.0417L3.5415 9.5"
+                      stroke="white"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </div>
               </div>
             </div>
+
+            <CopyToClipboard
+              text={wholeRoomID}
+              // onCopy={() => this.setState({ copied: true })}
+            >
+              <div
+                className="invite__link"
+                onClick={() => {
+                  copyLink(socketInstance.current.wholeRoomID);
+                }}
+              >
+                Invite
+              </div>
+            </CopyToClipboard>
           </div>
 
-          <CopyToClipboard
-            text={wholeRoomID}
-            // onCopy={() => this.setState({ copied: true })}
-          >
-            <div
-              className="invite__link"
-              onClick={() => {
-                copyLink(socketInstance.current.wholeRoomID);
-              }}
-            >
-              Invite
-            </div>
-          </CopyToClipboard>
+          <div className="vidoe__section" id="vidoe__container">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
+      )}
 
-        <div className="vidoe__section" id="vidoe__container"></div>
-      </div>
-      <div className="chart__section">
-        <Chart />
-      </div>
+      {showChart && (
+        <div
+          className="chart__section"
+          style={showChart ? { display: "block" } : { display: "none" }}
+          // style={`${showChart ? "display:block" : "display:none"}`}
+        >
+          <Chart />
+        </div>
+      )}
+
       <div className="btn__section">
         <div className="controller__container">
           <div>

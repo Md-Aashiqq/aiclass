@@ -60,4 +60,12 @@ svg {
   border: 2px solid #10b664;
 }
 
-
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+  .btn__group {
+    display: none;
+  }
+  .header {
+    display: flex;
+    justify-content: center;
+  }
+}
