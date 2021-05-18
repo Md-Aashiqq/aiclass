@@ -1,5 +1,6 @@
 .container {
-  height: 100vh;
+  /* height: 100vh; */
+  min-height: 90vh;
   background: #21242b;
   padding: 0px 8%;
   display: grid;

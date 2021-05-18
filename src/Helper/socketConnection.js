@@ -11,7 +11,7 @@ const initializePeerConnection = () => {
 
   return new Peer();
 };
-const websocket = "https://localhost:3000";
+const websocket = "http://localhost:3000";
 // const websocket = "https://aiclass-mini.herokuapp.com/:50713";
 
 let socketInstance = null;
@@ -57,6 +57,11 @@ class Connection {
       peers[userID] && peers[userID].close();
       this.removeVideo(userID);
     });
+    this.socket.on("new-broadcast-messsage", (data) => {
+      this.message.push(data);
+      this.settings.updateInstance("message", this.message);
+      //  toast.info(`${data.message.message} By ${data.userData.name}`);
+    });
     this.socket.on("disconnect", () => {
       console.log("socket disconnected --");
     });
@@ -86,6 +91,13 @@ class Connection {
     });
   };
 
+  boradcastMessage = (message) => {
+    this.message.push(message);
+    this.settings.updateInstance("message", this.message);
+    this.socket.emit("broadcast-message", message);
+    console.log(this.message);
+  };
+
   setNavigatorToStream = () => {
     this.getVideoAudioStream().then((stream) => {
       if (stream) {
@@ -108,8 +120,8 @@ class Connection {
     return myNavigator({
       video: video
         ? {
-            frameRate: quality ? quality : 12,
-            noiseSuppression: true,
+            // frameRate: quality ? quality : 12,
+            // noiseSuppression: true,
             width: { min: 640, ideal: 1280, max: 1920 },
             height: { min: 480, ideal: 720, max: 1080 },
           }
@@ -127,6 +139,8 @@ class Connection {
       const video = document.createElement("video");
       video.srcObject = this.videoContainer[createObj.id].stream;
       video.id = createObj.id;
+      video.classList.add("video__box");
+
       video.autoplay = true;
       if (this.myID === createObj.id) video.muted = true;
       videoContainer.appendChild(video);

@@ -70,8 +70,17 @@ span.active {
   padding-left: 4%;
   padding-right: 4%;
 }
-.chart__section {
+
+.chat__chart {
   grid-area: chart;
+}
+.chart__section {
+  display: grid;
+  place-content: center;
+  margin-top: 3rem;
+}
+.chat__section {
+  height: inherit;
 }
 .btn__section {
   grid-area: btn__grp;
@@ -186,12 +195,35 @@ span.active {
   color: #b92424;
 }
 
+.toogle__grp {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.toogle__grp div {
+  width: 50%;
+  padding: 1rem;
+  font-size: 1rem;
+  text-align: center;
+  background: #000000;
+  cursor: pointer;
+}
+
+.toogle__grp .chart__toogle {
+  background: #10b664;
+}
+
 @media only screen and (min-width: 320px) and (max-width: 480px) {
   .side__nav {
     display: none;
   }
   .chart__section {
     display: none;
+  }
+  .chart__section {
+    margin: 0;
   }
   .meeting__container {
     display: block;
@@ -210,10 +242,19 @@ span.active {
   .btn__section {
     height: 10vh;
   }
-  .vidoe__section div {
+  .vidoe__section {
     display: grid;
     grid-template-columns: repeat(2, 50%);
     height: 150px;
+  }
+
+  .vidoe__section div {
+    width: 100%;
+    height: 150px;
+  }
+
+  .vidoe__section .video__box {
+    object-fit: fill;
   }
   .phone__menu {
     display: flex;
@@ -229,5 +270,11 @@ span.active {
     align-items: center;
     justify-content: center;
     padding-bottom: 10px;
+  }
+  .chart__section {
+    min-height: 80vh;
+  }
+  .toogle__grp {
+    display: none;
   }
 }

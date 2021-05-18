@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Header from "../../components/Header";
 // import Controller from "../../components/Controller/Controller";
 // import VidoeRoom from "../../components/VidoeRoom";
+import Chat from "../../components/Chat/Chat";
 import Chart from "../../components/Chart/Chart";
 
 import { createSocketConnectionInstance } from "../../Helper/socketConnection";
@@ -24,7 +25,7 @@ function MeetingPage() {
   const [camStatus, setCamStatus] = useState(true);
   const [streaming, setStreaming] = useState(false);
   const [chatToggle, setChatToggle] = useState(false);
-  const [userDetails, setUserDetails] = useState(null);
+  const [userDetails, setUserDetails] = useState({ name: "ashick" });
   const [displayStream, setDisplayStream] = useState(false);
   const [messages, setMessages] = useState([]);
 
@@ -48,7 +49,7 @@ function MeetingPage() {
   useEffect(() => {
     if (window.innerWidth > 400) {
       setShowChart(true);
-      setShowChat(true);
+      setShowChat(false);
     } else {
       setShowChart(false);
       setShowChat(false);
@@ -187,45 +188,85 @@ function MeetingPage() {
             </CopyToClipboard>
           </div>
 
-          <div className="vidoe__section" id="vidoe__container">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
+          <div className="vidoe__section" id="vidoe__container"></div>
         </div>
       )}
 
-      {showChart && (
-        <div
-          className="chart__section"
-          style={showChart ? { display: "block" } : { display: "none" }}
-          // style={`${showChart ? "display:block" : "display:none"}`}
-        >
-          <Chart />
+      <div className="chat__chart">
+        <div>
+          {!chatToggle && (
+            <div className="toogle__grp">
+              <div
+                className="chart__toogle"
+                onClick={() => {
+                  setShowChart(true);
+                  setShowChat(false);
+                }}
+              >
+                {" "}
+                Chart{" "}
+              </div>
+              <div
+                className="chat__toogle"
+                onClick={() => {
+                  setShowChart(false);
+                  setShowChat(true);
+                }}
+              >
+                {" "}
+                Chat{" "}
+              </div>
+            </div>
+          )}
         </div>
-      )}
 
-      <div className="btn__section">
-        <div className="controller__container">
-          <div>
-            {micStatus ? (
-              <MicIcon className="mic__icon icon" />
-            ) : (
-              <MicOffIcon className="micOff__icon icon" />
-            )}
+        {showChart && (
+          <div
+            className="chart__section"
+            style={showChart ? { display: "grid" } : { display: "none" }}
+            // style={`${showChart ? "display:grid" : "display:none"}`}
+          >
+            <Chart />
           </div>
+        )}
 
-          <CallIcon className="call__icon icon" />
-          <div onClick={handleMyCam}>
-            {camStatus ? (
-              <VideocamIcon className="video__icon icon" />
-            ) : (
-              <VideocamOffIcon className="vidoeOff__icon icon" />
-            )}
+        {showChat && (
+          <div
+            className="chat__section"
+            style={showChat ? { display: "block" } : { display: "none" }}
+            // style={`${showChart ? "display:grid" : "display:none"}`}
+          >
+            <Chat
+              socketInstance={socketInstance.current}
+              myDetails={userDetails}
+              messages={messages}
+            />
           </div>
-        </div>
+        )}
       </div>
+
+      {showVideo && (
+        <div className="btn__section">
+          <div className="controller__container">
+            <div>
+              {micStatus ? (
+                <MicIcon className="mic__icon icon" />
+              ) : (
+                <MicOffIcon className="micOff__icon icon" />
+              )}
+            </div>
+
+            <CallIcon className="call__icon icon" />
+            <div onClick={handleMyCam}>
+              {camStatus ? (
+                <VideocamIcon className="video__icon icon" />
+              ) : (
+                <VideocamOffIcon className="vidoeOff__icon icon" />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
