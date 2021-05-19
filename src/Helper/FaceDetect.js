@@ -3,12 +3,16 @@ import * as faceapi from "face-api.js";
 let face = null;
 class DetectFace {
   video = null;
-  constructor(video) {
+  ID = "";
+  emotion = "";
+  constructor(video, ID) {
     this.video = video;
-    console.log(this.video);
-    const re = this.loadmodels();
+    this.ID = ID;
+    console.log(this.video, ID);
+    // this.loadmodels();
 
     // this.detectEmotions();
+    this.sendData();
   }
 
   async loadmodels() {
@@ -29,8 +33,13 @@ class DetectFace {
     let obj = results[0].expressions;
     const emo = Object.keys(obj).reduce((a, b) => (obj[a] > obj[b] ? a : b));
     console.log(emo);
+    this.emotion = emo;
+  }
+
+  async sendData() {
+    console.log(this.video, this.ID);
   }
 }
-export function detectFaces(video = null) {
-  return (face = new DetectFace(video));
+export function detectFaces(video, ID) {
+  return (face = new DetectFace(video, ID));
 }

@@ -1,29 +1,40 @@
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Doughnut } from "react-chartjs-2";
-
+// import { Apollo_Client } from "../../Helper/Apollo-client";
 import "./style.css";
 
 function Chart() {
+  const apollo_client_ins = useRef(null);
+
+  // useEffect(() => {
+  //   startApolloCleint();
+  // }, []);
+
+  // const startApolloCleint = async () => {
+  //   apollo_client_ins.current = Apollo_Client();
+  //   // console.log(apollo_client_ins);
+  //   const { sendEmotion } = apollo_client_ins.current;
+  //   console.log(sendEmotion());
+  //   computePercantage();
+  // };
+
+  // const computePercantage = () => {
+  //   console.log(apollo_client_ins.current);
+  // };
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log(apollo_client_ins.current);
+  //   }, 2000);
+  // }, []);
   const state = {
-    labels: ["January", "February", "March", "April", "May"],
+    labels: ["sad", "happy", "netural"],
     datasets: [
       {
         label: "Rainfall",
-        backgroundColor: [
-          "#B21F00",
-          "#C9DE00",
-          "#2FDE00",
-          "#00A6B4",
-          "#6800B4",
-        ],
-        hoverBackgroundColor: [
-          "#501800",
-          "#4B5000",
-          "#175000",
-          "#003350",
-          "#35014F",
-        ],
-        data: [65, 59, 80, 81, 56],
+        backgroundColor: ["#B21F00", "#C9DE00", "#2FDE00"],
+        hoverBackgroundColor: ["#501800", "#4B5000", "#175000"],
+        data: [65, 59, 80],
       },
     ],
   };

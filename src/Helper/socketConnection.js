@@ -13,8 +13,8 @@ const initializePeerConnection = () => {
 
   return new Peer();
 };
-const websocket = "http://localhost:3000";
-// const websocket = "https://aiclass-mini.herokuapp.com/:50713";
+// const websocket = "http://localhost:3000";
+const websocket = "https://aiclass-mini.herokuapp.com/";
 
 let socketInstance = null;
 let peers = {};
@@ -147,7 +147,8 @@ class Connection {
       video.autoplay = true;
       if (this.myID === createObj.id) video.muted = true;
       videoContainer.appendChild(video);
-      detectFaces(video);
+      detectFaces(video, this.myID);
+
       roomContainer.append(videoContainer);
     } else {
       document.getElementById(createObj.id).srcObject = createObj.stream;

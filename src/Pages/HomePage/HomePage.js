@@ -24,7 +24,7 @@ function HomePage(props) {
     setGobalValues(res.displayName);
 
     axios
-      .get("http://localhost:3001/join")
+      .get("https://aiclass-mini.herokuapp.com/join")
       .then(function (response) {
         // handle success
         console.log(response);
