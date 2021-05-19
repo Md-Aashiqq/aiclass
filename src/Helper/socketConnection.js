@@ -14,7 +14,7 @@ const initializePeerConnection = () => {
   return new Peer();
 };
 // const websocket = "http://localhost:3000";
-const websocket = "https://aiclass-mini.herokuapp.com/";
+const websocket = "https://aiclass-mini.herokuapp.com/:24380";
 
 let socketInstance = null;
 let peers = {};
