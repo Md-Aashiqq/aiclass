@@ -1,7 +1,9 @@
 export const reducer = (state, action) => {
   switch (action.type) {
     case "PUTUSERDETAIL":
-      return { ...state, userDetail: action.load };
+      return { ...state, userDetail: action.userDetail };
+    case "PUTUSERID":
+      return { ...state, userID: action.userID };
     case "ADDAUTH":
       return { ...state, isLogin: true, token: action.token };
     case "BILLCOUNTINCR":
@@ -13,6 +15,7 @@ export const reducer = (state, action) => {
 
 export const initialState = {
   userDetail: null,
+  userID: "",
   isLogin: false,
   token: null,
   billCount: 0,

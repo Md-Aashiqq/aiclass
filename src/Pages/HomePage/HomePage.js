@@ -1,5 +1,3 @@
-
-
 import React, { useState } from "react";
 import "./style.css";
 import Header from "../../components/Header";
@@ -8,28 +6,37 @@ import { ReactComponent as lapLogo } from "../../assets/images/lapLogo.svg";
 import socialMediaAuth from "../../services/auth";
 import { googleAuth } from "../../Helper/AuthHelper";
 
+import { useDataLayerValue } from "../../DataLayer";
+
 function HomePage(props) {
   const [wholeRoomID, setWholeRoomID] = useState("");
+
+  const [{ userDetail }, dispatch] = useDataLayerValue();
+
+  const setGobalValues = async (value) => {
+    // const [{ userDetail }, dispatch] = useDataLayerValue();
+    await dispatch({ type: "PUTUSERDETAIL", userDetail: value });
+  };
 
   const handleJoin = async () => {
     const res = await socialMediaAuth(googleAuth);
 
-    console.log(res);
+    setGobalValues(res.displayName);
 
-    // axios
-    //   .get("http://localhost:3000/join")
-    //   .then(function (response) {
-    //     // handle success
-    //     console.log(response);
-    //     props.history?.push(`/join/${response.data.link}?quality=${12}`);
-    //   })
-    //   .catch(function (error) {
-    //     // handle error
-    //     console.log(error);
-    //   })
-    //   .then(function () {
-    //     // always executed
-    //   });
+    axios
+      .get("http://localhost:3001/join")
+      .then(function (response) {
+        // handle success
+        console.log(response);
+        props.history?.push(`/join/${response.data.link}?quality=${12}`);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .then(function () {
+        // always executed
+      });
   };
 
   const handleJoinMeeting = () => {

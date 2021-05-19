@@ -1,6 +1,8 @@
 import io from "socket.io-client";
 import Peer from "peerjs";
 
+import { detectFaces } from "./FaceDetect";
+
 const initializePeerConnection = () => {
   // return new Peer('', {
   //     host: "localhost:9000", // need to provide peerjs server endpoint
@@ -74,6 +76,7 @@ class Connection {
     console.log(this.myPeer);
     this.myPeer.on("open", (id) => {
       this.myID = id;
+
       const roomID = window.location.pathname.split("/")[2];
       // const roomID ='sdsafwerefrdf23'
       const userData = {
@@ -144,6 +147,7 @@ class Connection {
       video.autoplay = true;
       if (this.myID === createObj.id) video.muted = true;
       videoContainer.appendChild(video);
+      detectFaces(video);
       roomContainer.append(videoContainer);
     } else {
       document.getElementById(createObj.id).srcObject = createObj.stream;

@@ -6,6 +6,8 @@ import Chat from "../../components/Chat/Chat";
 import Chart from "../../components/Chart/Chart";
 
 import { createSocketConnectionInstance } from "../../Helper/socketConnection";
+import { useDataLayerValue } from "../../DataLayer";
+
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 import CallIcon from "@material-ui/icons/CallEnd";
@@ -16,8 +18,10 @@ import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import ChatIcon from "@material-ui/icons/Chat";
 import MenuIcon from "@material-ui/icons/Menu";
 
+import { detectFaces } from "../../Helper/FaceDetect";
+
 import "./style.css";
-function MeetingPage() {
+function MeetingPage(props) {
   const [count, showCount] = useState(false);
 
   let socketInstance = useRef(null);
@@ -36,6 +40,8 @@ function MeetingPage() {
 
   const [wholeRoomID, setwholeRoomID] = useState("");
 
+  const [{ userID }, dispatch] = useDataLayerValue();
+
   useEffect(() => {
     return () => {
       socketInstance.current?.destoryConnection();
@@ -45,6 +51,15 @@ function MeetingPage() {
   useEffect(() => {
     if (userDetails) startConnection();
   }, [userDetails]);
+
+  const startDetect = () => {
+    console.log(userID);
+  };
+
+  const handleDisconnect = () => {
+    socketInstance.current?.destoryConnection();
+    props.history.push("/");
+  };
 
   useEffect(() => {
     if (window.innerWidth > 400) {
@@ -256,7 +271,7 @@ function MeetingPage() {
               )}
             </div>
 
-            <CallIcon className="call__icon icon" />
+            <CallIcon className="call__icon icon" onClick={handleDisconnect} />
             <div onClick={handleMyCam}>
               {camStatus ? (
                 <VideocamIcon className="video__icon icon" />
