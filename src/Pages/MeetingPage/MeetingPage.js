@@ -44,7 +44,7 @@ function MeetingPage(props) {
 
   const [sendData, setSendData] = useState(false);
   const [sendDetail, setSendDetail] = useState({});
-  const [{ userID }, dispatch] = useDataLayerValue();
+  const [{ userID , isHost }, dispatch] = useDataLayerValue();
 
   useEffect(() => {
     return () => {
@@ -83,28 +83,6 @@ function MeetingPage(props) {
       userDetails,
     });
   };
-
-  // const getVidoeContainer = () => {
-  //   setTimeout(async () => {
-  //     const myvideo = document.getElementById(socketInstance.current.myID);
-  //     let id = socketInstance.current.myID;
-
-  //     const dect = await detectFaces(myvideo, socketInstance.current?.myID);
-  //     setModel(dect);
-  //     console.log(dect);
-  //     const results = await dect.model
-  //       .detectAllFaces(myvideo)
-  //       .withFaceExpressions();
-  //     console.log(results);
-  //     let obj = results[0]?.expressions;
-  //     const emo = Object.keys(obj).reduce((a, b) => (obj[a] > obj[b] ? a : b));
-  //     setSendDetail({
-  //       type: emo,
-  //       id: id,
-  //     });
-  //     setSendData(true);
-  //   }, 10000);
-  // };
 
   const updateFromInstance = (key, value) => {
     if (key === "streaming") setStreaming(value);
@@ -260,7 +238,7 @@ function MeetingPage(props) {
           )}
         </div>
 
-        {showChart && (
+        {(showChart && isHost)  && (
           <div
             className="chart__section"
             style={showChart ? { display: "grid" } : { display: "none" }}

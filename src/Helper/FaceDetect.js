@@ -36,14 +36,14 @@ class DetectFace {
   async detectEmotions() {
     console.log("detect");
 
-    const results = await faceapi
-      .detectAllFaces(this.video)
-      .withFaceExpressions();
-    console.log(results);
-    let obj = results[0]?.expressions;
-    const emo = Object.keys(obj).reduce((a, b) => (obj[a] > obj[b] ? a : b));
-    console.log(emo);
-    this.emotion = emo;
+    // const results = await faceapi
+    //   .detectAllFaces(this.video)
+    //   .withFaceExpressions();
+    // console.log(results);
+    // let obj = results[0]?.expressions;
+    // const emo = Object.keys(obj).reduce((a, b) => (obj[a] > obj[b] ? a : b));
+    // console.log(emo);
+    // this.emotion = emo;
 
     await client
       .mutate({
@@ -55,7 +55,7 @@ class DetectFace {
             }
           }
         `,
-        variables: { id: this.ID, type: emo },
+        variables: { id: this.ID, type: "happy"},
       })
       .then((res) => {
         console.log(res.data.addEmotion);

@@ -11,7 +11,7 @@ import { useDataLayerValue } from "../../DataLayer";
 function HomePage(props) {
   const [wholeRoomID, setWholeRoomID] = useState("");
 
-  const [{ userDetail }, dispatch] = useDataLayerValue();
+  const [{ userDetail  , isHost }, dispatch] = useDataLayerValue();
 
   const setGobalValues = async (value) => {
     // const [{ userDetail }, dispatch] = useDataLayerValue();
@@ -22,6 +22,8 @@ function HomePage(props) {
     const res = await socialMediaAuth(googleAuth);
 
     setGobalValues(res.displayName);
+
+    dispatch({type:"SETISHOST" , value:true})
 
     axios
       .get("http://localhost:3001/join")

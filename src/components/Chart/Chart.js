@@ -1,13 +1,21 @@
 import { useSubscription } from "@apollo/client";
 import gql from "graphql-tag";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { Doughnut } from "react-chartjs-2";
-// import { Apollo_Client } from "../../Helper/Apollo-client";
+import Listener from "./Listener";
+
 import "./style.css";
 
 
-const ListenEmotion = () => {
+
+function Chart() {
   
+
+  const [ChartData, setChartData] = useState([])
+  const [labels, setLabels] = useState([])
+  
+ 
+
   const NEWEMOTION_SUBSCRIPTION = gql`
   subscription newEmotion {
     newEmotion {
@@ -16,44 +24,62 @@ const ListenEmotion = () => {
     }
   }
 `;
-  
-  
-  const { data, loading , error } = useSubscription(NEWEMOTION_SUBSCRIPTION);
+
+   const { data, loading , error } = useSubscription(NEWEMOTION_SUBSCRIPTION);
   if (loading) {
     console.log("loading")
-    return <div>ading</div>
+    return <div>Loading</div>
 
   }
   if (error) {
     console.log(error)
+    }
+  console.log("data", data.newEmotion)
+  var unique = []; var distinct = [];
+  var labe =[]
+ 
+      var emotions = data.newEmotion
+    
+    for (let i = 0; i < emotions.length; i++){
+    if( !unique[emotions[i].type]){
+      distinct.push(emotions[i].type);
+      unique[emotions[i].type] = 1;
+    }
+    }
+    console.log(distinct)
+    // setLabels(distinct)
+    
+    distinct.forEach(element => {
+     let d = 0
+      emotions.forEach(({id,type}) => {
+        if (type === element) {
+          d++
   }
+      });
+    labe.push(d)
+  });
 
-  console.log("data",data)
-
-  return <h4></h4>
-  
-
-}
-
-
-function Chart() {
-  
-  const state = {
-    labels: ["sad", "happy", "netural"],
+  console.log(labe)
+ console.log(distinct)
+  let state;
+  if (!loading) {
+     state = {
+    labels: distinct,
     datasets: [
       {
         label: "Rainfall",
         backgroundColor: ["#B21F00", "#C9DE00", "#2FDE00"],
         hoverBackgroundColor: ["#501800", "#4B5000", "#175000"],
-        data: [5, 3, 1],
+        data: labe,
       },
     ],
   };
+ }
 
   return (
 
-    
-    <div className="chart__area">
+    <div>
+      {loading ? <div>Loading</div> : (<div className="chart__area">
       <Doughnut
         data={state}
         options={{
@@ -68,8 +94,10 @@ function Chart() {
           },
         }}
       />
-      <ListenEmotion />
+  
+    </div>)}
     </div>
+    
   );
 }
 
