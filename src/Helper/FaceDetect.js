@@ -45,6 +45,10 @@ class DetectFace {
     // console.log(emo);
     // this.emotion = emo;
 
+    // if (emo === undefined || emo === null) {
+    //   emo = "neural";
+    // }
+
     await client
       .mutate({
         mutation: gql`
@@ -55,7 +59,7 @@ class DetectFace {
             }
           }
         `,
-        variables: { id: this.ID, type: "happy"},
+        variables: { id: this.ID, type: "neural"},
       })
       .then((res) => {
         console.log(res.data.addEmotion);

@@ -1,34 +1,52 @@
-// import { onError } from "@apollo/client/link/error";
-// import { WebSocketLink } from '@apollo/client/link/ws';
 
-import ApolloClient from "apollo-boost";
-import { gql } from "@apollo/client";
-const client = new ApolloClient({
-  uri: "http://localhost:4000/",
+import { split, HttpLink } from '@apollo/client';
+import { getMainDefinition } from '@apollo/client/utilities';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { ApolloClient, InMemoryCache  , gql} from '@apollo/client';
+
+const httpLink = new HttpLink({
+  uri: 'http://localhost:4000/'
 });
 
-// const wsLink = new WebSocketLink({
-//   uri: 'ws://localhost:4000/subscriptions',
-//   options: {
-//     reconnect: true
-//   }
-// })
-
-// The split function takes three parameters:
-//
-// * A function that's called for each operation to execute
-// * The Link to use for an operation if the function returns a "truthy" value
-// * The Link to use for an operation if the function returns a "falsy" value
+const wsLink = new WebSocketLink({
+  uri: 'ws://localhost:4000/graphql',
+  options: {
+    reconnect: true
+  }
+});
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    );
+  },
+  wsLink,
+  httpLink,
+);
 
 let emotionData = [];
+let client;
 class apolloClient {
   apollo_client = null;
 
-  constructor() {}
+  constructor() {
+    return (async () => {
+      this.apollo_client = new ApolloClient({
+        link: splitLink,
+        cache: new InMemoryCache()
+      });
+
+      
+
+    })();
+    
+  }
 
   getEmotions() {
-    console.log(client);
-    client
+    console.log(this.apollo_client);
+    this.apollo_client
       .query({
         query: gql`
           query getEmotions {
@@ -45,32 +63,27 @@ class apolloClient {
       });
   }
 
-  async sendEmotion(type, id) {
+  async sendEmotion() {
     let data;
-    console.log("asdasd");
-    console.log(type, id);
-    await client
+
+    this.apollo_client
       .mutate({
         mutation: gql`
-          mutation addEmotion($id: String!, $type: String) {
-            addEmotion(id: $id, type: $type) {
+          mutation {
+            addEmotion(id: "12", type: "sad") {
               type
               id
             }
           }
         `,
-        variables: { id, type },
       })
       .then((res) => {
         console.log(res.data.addEmotion);
-        data = res.data.addEmotion;
       })
       .catch((e) => console.log(e));
-
-    return data;
   }
 }
-let clients;
+
 export function Apollo_Client() {
-  return (clients = new apolloClient());
+  return ( client = new apolloClient());
 }
