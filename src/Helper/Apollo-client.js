@@ -1,17 +1,11 @@
 // import { onError } from "@apollo/client/link/error";
 // import { WebSocketLink } from '@apollo/client/link/ws';
 
-// import ApolloClient from "apollo-boost";
-
-// import { gql } from "@apollo/client";
-
-// import { useDataLayerValue } from "../DataLayer";
-
-// const client = new ApolloClient({
-//   uri: "http://localhost:4000/",
-// });
-
-
+import ApolloClient from "apollo-boost";
+import { gql } from "@apollo/client";
+const client = new ApolloClient({
+  uri: "http://localhost:4000/",
+});
 
 // const wsLink = new WebSocketLink({
 //   uri: 'ws://localhost:4000/subscriptions',
@@ -20,59 +14,21 @@
 //   }
 // })
 
-
-
-import { split, HttpLink } from '@apollo/client';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { ApolloClient, InMemoryCache  , gql} from '@apollo/client';
-
-const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/'
-});
-
-const wsLink = new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
-  options: {
-    reconnect: true
-  }
-});
-
 // The split function takes three parameters:
 //
 // * A function that's called for each operation to execute
 // * The Link to use for an operation if the function returns a "truthy" value
 // * The Link to use for an operation if the function returns a "falsy" value
-const splitLink = split(
-  ({ query }) => {
-    const definition = getMainDefinition(query);
-    return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
-    );
-  },
-  wsLink,
-  httpLink,
-);
 
 let emotionData = [];
-let client;
 class apolloClient {
   apollo_client = null;
 
-  constructor() {
-    return (async () => {
-      this.apollo_client = new ApolloClient({
-        link: splitLink,
-        cache: new InMemoryCache()
-      });
-    })();
-    
-  }
+  constructor() {}
 
   getEmotions() {
-    console.log(this.apollo_client);
-    this.apollo_client
+    console.log(client);
+    client
       .query({
         query: gql`
           query getEmotions {
@@ -89,27 +45,32 @@ class apolloClient {
       });
   }
 
-  async sendEmotion() {
+  async sendEmotion(type, id) {
     let data;
-
-    this.apollo_client
+    console.log("asdasd");
+    console.log(type, id);
+    await client
       .mutate({
         mutation: gql`
-          mutation {
-            addEmotion(id: "12", type: "sad") {
+          mutation addEmotion($id: String!, $type: String) {
+            addEmotion(id: $id, type: $type) {
               type
               id
             }
           }
         `,
+        variables: { id, type },
       })
       .then((res) => {
         console.log(res.data.addEmotion);
+        data = res.data.addEmotion;
       })
       .catch((e) => console.log(e));
+
+    return data;
   }
 }
-
+let clients;
 export function Apollo_Client() {
-  return ( client = new apolloClient());
+  return (clients = new apolloClient());
 }

@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useRef , useLayoutEffect } from "react";
-import Header from "../../components/Header";
-// import Controller from "../../components/Controller/Controller";
-// import VidoeRoom from "../../components/VidoeRoom";
+import React, { useState, useEffect, useRef } from "react";
+
 import Chat from "../../components/Chat/Chat";
 import Chart from "../../components/Chart/Chart";
 
-import {detectFaces} from "../../Helper/FaceDetect"
+import { detectFaces } from "../../Helper/FaceDetect";
 
 import { createSocketConnectionInstance } from "../../Helper/socketConnection";
 import { useDataLayerValue } from "../../DataLayer";
@@ -20,15 +18,14 @@ import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import ChatIcon from "@material-ui/icons/Chat";
 import MenuIcon from "@material-ui/icons/Menu";
 
-
-
 import "./style.css";
+import CustomMutaion from "./CustomMutaion";
 function MeetingPage(props) {
   const [count, showCount] = useState(false);
 
   let socketInstance = useRef(null);
 
-  const [model, setModel] = useState(null)
+  const [model, setModel] = useState(null);
 
   const [micStatus, setMicStatus] = useState(true);
   const [camStatus, setCamStatus] = useState(true);
@@ -45,6 +42,8 @@ function MeetingPage(props) {
 
   const [wholeRoomID, setwholeRoomID] = useState("");
 
+  const [sendData, setSendData] = useState(false);
+  const [sendDetail, setSendDetail] = useState({});
   const [{ userID }, dispatch] = useDataLayerValue();
 
   useEffect(() => {
@@ -60,7 +59,6 @@ function MeetingPage(props) {
   const startDetect = () => {
     console.log(userID);
   };
-
 
   const handleDisconnect = () => {
     socketInstance.current?.destoryConnection();
@@ -84,17 +82,29 @@ function MeetingPage(props) {
       params,
       userDetails,
     });
-    getVidoeContainer()
   };
 
-  const getVidoeContainer = () => {
-    setTimeout(async () => {
-     const myvideo = document.getElementById(socketInstance.current.myID)
+  // const getVidoeContainer = () => {
+  //   setTimeout(async () => {
+  //     const myvideo = document.getElementById(socketInstance.current.myID);
+  //     let id = socketInstance.current.myID;
 
-    const dect = await detectFaces(myvideo,socketInstance.current?.myID)
-    setModel(dect)
-    }, 4000);
-  }
+  //     const dect = await detectFaces(myvideo, socketInstance.current?.myID);
+  //     setModel(dect);
+  //     console.log(dect);
+  //     const results = await dect.model
+  //       .detectAllFaces(myvideo)
+  //       .withFaceExpressions();
+  //     console.log(results);
+  //     let obj = results[0]?.expressions;
+  //     const emo = Object.keys(obj).reduce((a, b) => (obj[a] > obj[b] ? a : b));
+  //     setSendDetail({
+  //       type: emo,
+  //       id: id,
+  //     });
+  //     setSendData(true);
+  //   }, 10000);
+  // };
 
   const updateFromInstance = (key, value) => {
     if (key === "streaming") setStreaming(value);
@@ -113,9 +123,6 @@ function MeetingPage(props) {
     setwholeRoomID(link);
   };
 
-  
-
-
   return (
     <div className="meeting__container">
       <div className="meeting__header">
@@ -127,7 +134,6 @@ function MeetingPage(props) {
           }}
         />
       </div>
-
       {displayMenu && (
         <div className="phone__menu">
           <div

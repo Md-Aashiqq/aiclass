@@ -1,19 +1,12 @@
 import io from "socket.io-client";
 import Peer from "peerjs";
+import { detectFaces } from "./FaceDetect";
 
 const initializePeerConnection = () => {
-  // return new Peer('', {
-  //     host: "localhost:9000", // need to provide peerjs server endpoint
-  //                           // (something like localhost:9000)
-  //     secure: true,
-
-  // });
-
   return new Peer();
 };
 const websocket = "http://localhost:3001";
 // const websocket = "https://aiclass-mini.herokuapp.com/:24380";
-
 
 let socketInstance = null;
 let peers = {};
@@ -146,6 +139,7 @@ class Connection {
       video.autoplay = true;
       if (this.myID === createObj.id) video.muted = true;
       videoContainer.appendChild(video);
+      detectFaces(video, this.myID);
       roomContainer.append(videoContainer);
     } else {
       document.getElementById(createObj.id).srcObject = createObj.stream;
