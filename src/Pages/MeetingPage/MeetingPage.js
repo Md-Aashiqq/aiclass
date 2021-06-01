@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef , useLayoutEffect } from "react";
 import Header from "../../components/Header";
 // import Controller from "../../components/Controller/Controller";
 // import VidoeRoom from "../../components/VidoeRoom";
 import Chat from "../../components/Chat/Chat";
 import Chart from "../../components/Chart/Chart";
+
+import {detectFaces} from "../../Helper/FaceDetect"
 
 import { createSocketConnectionInstance } from "../../Helper/socketConnection";
 import { useDataLayerValue } from "../../DataLayer";
@@ -18,13 +20,16 @@ import VideocamOffIcon from "@material-ui/icons/VideocamOff";
 import ChatIcon from "@material-ui/icons/Chat";
 import MenuIcon from "@material-ui/icons/Menu";
 
-import { detectFaces } from "../../Helper/FaceDetect";
+
 
 import "./style.css";
 function MeetingPage(props) {
   const [count, showCount] = useState(false);
 
   let socketInstance = useRef(null);
+
+  const [model, setModel] = useState(null)
+
   const [micStatus, setMicStatus] = useState(true);
   const [camStatus, setCamStatus] = useState(true);
   const [streaming, setStreaming] = useState(false);
@@ -56,6 +61,7 @@ function MeetingPage(props) {
     console.log(userID);
   };
 
+
   const handleDisconnect = () => {
     socketInstance.current?.destoryConnection();
     props.history.push("/");
@@ -78,7 +84,17 @@ function MeetingPage(props) {
       params,
       userDetails,
     });
+    getVidoeContainer()
   };
+
+  const getVidoeContainer = () => {
+    setTimeout(async () => {
+     const myvideo = document.getElementById(socketInstance.current.myID)
+
+    const dect = await detectFaces(myvideo,socketInstance.current?.myID)
+    setModel(dect)
+    }, 4000);
+  }
 
   const updateFromInstance = (key, value) => {
     if (key === "streaming") setStreaming(value);
@@ -96,6 +112,9 @@ function MeetingPage(props) {
   const copyLink = (link) => {
     setwholeRoomID(link);
   };
+
+  
+
 
   return (
     <div className="meeting__container">

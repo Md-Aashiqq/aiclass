@@ -1,32 +1,43 @@
+import { useSubscription } from "@apollo/client";
+import gql from "graphql-tag";
 import React, { useEffect, useState, useRef } from "react";
 import { Doughnut } from "react-chartjs-2";
 // import { Apollo_Client } from "../../Helper/Apollo-client";
 import "./style.css";
 
+
+const ListenEmotion = () => {
+  
+  const NEWEMOTION_SUBSCRIPTION = gql`
+  subscription newEmotion {
+    newEmotion {
+      id
+      type
+    }
+  }
+`;
+  
+  
+  const { data, loading , error } = useSubscription(NEWEMOTION_SUBSCRIPTION);
+  if (loading) {
+    console.log("loading")
+    return <div>ading</div>
+
+  }
+  if (error) {
+    console.log(error)
+  }
+
+  console.log("data",data)
+
+  return <h4></h4>
+  
+
+}
+
+
 function Chart() {
-  const apollo_client_ins = useRef(null);
-
-  // useEffect(() => {
-  //   startApolloCleint();
-  // }, []);
-
-  // const startApolloCleint = async () => {
-  //   apollo_client_ins.current = Apollo_Client();
-  //   // console.log(apollo_client_ins);
-  //   const { sendEmotion } = apollo_client_ins.current;
-  //   console.log(sendEmotion());
-  //   computePercantage();
-  // };
-
-  // const computePercantage = () => {
-  //   console.log(apollo_client_ins.current);
-  // };
-
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     console.log(apollo_client_ins.current);
-  //   }, 2000);
-  // }, []);
+  
   const state = {
     labels: ["sad", "happy", "netural"],
     datasets: [
@@ -34,12 +45,14 @@ function Chart() {
         label: "Rainfall",
         backgroundColor: ["#B21F00", "#C9DE00", "#2FDE00"],
         hoverBackgroundColor: ["#501800", "#4B5000", "#175000"],
-        data: [65, 59, 80],
+        data: [5, 3, 1],
       },
     ],
   };
 
   return (
+
+    
     <div className="chart__area">
       <Doughnut
         data={state}
@@ -55,6 +68,7 @@ function Chart() {
           },
         }}
       />
+      <ListenEmotion />
     </div>
   );
 }

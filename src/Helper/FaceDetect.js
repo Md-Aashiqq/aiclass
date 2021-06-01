@@ -5,14 +5,17 @@ class DetectFace {
   video = null;
   ID = "";
   emotion = "";
+  model = "";
+  faceapi = null;
   constructor(video, ID) {
-    this.video = video;
-    this.ID = ID;
-    console.log(this.video, ID);
-    // this.loadmodels();
-
-    // this.detectEmotions();
-    this.sendData();
+   
+    return (async () => {
+      this.video = video;
+      this.ID = ID;
+      this.model  = await this.loadmodels()
+      this.faceapi = faceapi
+      return this
+    })();
   }
 
   async loadmodels() {
@@ -20,7 +23,6 @@ class DetectFace {
     await faceapi.nets.ssdMobilenetv1.loadFromUri("/model");
     await faceapi.nets.faceExpressionNet.loadFromUri("/model");
     console.log("model loaded");
-    this.detectEmotions();
     return faceapi;
   }
 
@@ -30,7 +32,7 @@ class DetectFace {
       .detectAllFaces(this.video)
       .withFaceExpressions();
     console.log(results);
-    let obj = results[0].expressions;
+    let obj = results[0]?.expressions;
     const emo = Object.keys(obj).reduce((a, b) => (obj[a] > obj[b] ? a : b));
     console.log(emo);
     this.emotion = emo;
