@@ -5,8 +5,7 @@ import { detectFaces } from "./FaceDetect";
 const initializePeerConnection = () => {
   return new Peer();
 };
-const websocket = "http://localhost:3001";
-// const websocket = "https://aiclass-mini.herokuapp.com/:24380";
+const websocket = "https://aiclass-backend.herokuapp.com/";
 
 let socketInstance = null;
 let peers = {};
@@ -14,7 +13,7 @@ const initializeSocketConnection = () => {
   console.log("socket");
   // return io(websocket)
   return io(websocket, {
-    withCredentials: true,
+    withCredentials: false,
     extraHeaders: {
       "my-custom-header": "abcd",
     },

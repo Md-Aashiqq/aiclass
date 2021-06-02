@@ -26,7 +26,7 @@ function HomePage(props) {
     dispatch({type:"SETISHOST" , value:true})
 
     axios
-      .get("http://localhost:3001/join")
+      .get("https://aiclass-backend.herokuapp.com/join")
       .then(function (response) {
         // handle success
         console.log(response);
