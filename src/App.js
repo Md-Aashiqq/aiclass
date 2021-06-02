@@ -18,7 +18,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://aiclass-graphql-endpoint.herokuapp.com/graphql",
+  uri: "wss://aiclass-graphql-endpoint.herokuapp.com/graphql",
   options: {
     reconnect: true,
   },
