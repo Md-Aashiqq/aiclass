@@ -14,13 +14,13 @@ import {
 } from "@apollo/client";
 
 const httpLink = new HttpLink({
-  // uri: "https://aiclass-graphql-endpoint.herokuapp.com/",
-  uri: "http://localhost:4000/",
+  uri: "https://aiclass-graphql-endpoint.herokuapp.com/",
+  // uri: "http://localhost:4000/",
 });
 
 const wsLink = new WebSocketLink({
-  // uri: "wss://aiclass-graphql-endpoint.herokuapp.com/graphql",
-  uri: "ws://localhost:4000/graphql",
+  uri: "wss://aiclass-graphql-endpoint.herokuapp.com/graphql",
+  // uri: "ws://localhost:4000/graphql",
   options: {
     reconnect: true,
   },

@@ -4,8 +4,8 @@ import * as faceapi from "face-api.js";
 import ApolloClient from "apollo-boost";
 import { gql } from "@apollo/client";
 const client = new ApolloClient({
-  // uri: "https://aiclass-graphql-endpoint.herokuapp.com/",
-  uri: "http://localhost:4000/",
+  uri: "https://aiclass-graphql-endpoint.herokuapp.com/",
+  // uri: "http://localhost:4000/",
 });
 
 let face = null;

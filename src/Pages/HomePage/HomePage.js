@@ -71,7 +71,7 @@ function HomePage(props) {
             <input
               className="input__box"
               type="text"
-              style={{ color: black }}
+              style={{ color: "black" }}
               placeholder="paste link"
               onChange={(e) => setWholeRoomID(e.target.value)}
             />
