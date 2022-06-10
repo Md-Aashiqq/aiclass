@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import "./style.css";
 import Header from "../../components/Header";
 import axios from "axios";
-import { ReactComponent as lapLogo } from "../../assets/images/lapLogo.svg";
 import socialMediaAuth from "../../services/auth";
 import { googleAuth } from "../../Helper/AuthHelper";
 
 import { useDataLayerValue } from "../../DataLayer";
 
+export const UserContext = React.createContext();
+
 function HomePage(props) {
   const [wholeRoomID, setWholeRoomID] = useState("");
+  const [userName, setUserName] = useState("");
 
-  const [{ userDetail  , isHost }, dispatch] = useDataLayerValue();
+  const [{ userDetail, isHost }, dispatch] = useDataLayerValue();
 
   const setGobalValues = async (value) => {
+    console.log("setGobalValues", value);
+    // setUserName(value);
     // const [{ userDetail }, dispatch] = useDataLayerValue();
     await dispatch({ type: "PUTUSERDETAIL", userDetail: value });
   };
@@ -23,7 +27,7 @@ function HomePage(props) {
 
     setGobalValues(res.displayName);
 
-    dispatch({type:"SETISHOST" , value:true})
+    dispatch({ type: "SETISHOST", value: true });
 
     axios
       .get("https://aiclass-backend.herokuapp.com/join")
@@ -67,6 +71,7 @@ function HomePage(props) {
             <input
               className="input__box"
               type="text"
+              style={{ color: black }}
               placeholder="paste link"
               onChange={(e) => setWholeRoomID(e.target.value)}
             />

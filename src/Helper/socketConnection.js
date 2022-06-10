@@ -133,13 +133,16 @@ class Connection {
       const video = document.createElement("video");
       video.srcObject = this.videoContainer[createObj.id].stream;
       video.id = createObj.id;
-      video.classList.add("video__box");
+      videoContainer.classList.add(createObj.id);
+      video.classList.add("video");
 
       video.autoplay = true;
       if (this.myID === createObj.id) video.muted = true;
       videoContainer.appendChild(video);
+      // TODOs
+      console.log(this.socket);
       detectFaces(video, this.myID);
-      roomContainer.append(videoContainer);
+      roomContainer.appendChild(videoContainer);
     } else {
       document.getElementById(createObj.id).srcObject = createObj.stream;
     }
@@ -190,7 +193,9 @@ class Connection {
   removeVideo = (id) => {
     delete this.videoContainer[id];
     const video = document.getElementById(id);
+    const vidContainer = document.getElementsByClassName(id);
     if (video) video.remove();
+    if (vidContainer[0]) vidContainer[0].remove();
   };
 
   toggleVideoTrack = (status) => {

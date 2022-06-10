@@ -31,7 +31,7 @@ function MeetingPage(props) {
   const [camStatus, setCamStatus] = useState(true);
   const [streaming, setStreaming] = useState(false);
   const [chatToggle, setChatToggle] = useState(false);
-  const [userDetails, setUserDetails] = useState({ name: "ashick" });
+  const [userDetails, setUserDetails] = useState({ name: "User" });
   const [displayStream, setDisplayStream] = useState(false);
   const [messages, setMessages] = useState([]);
 
@@ -44,7 +44,7 @@ function MeetingPage(props) {
 
   const [sendData, setSendData] = useState(false);
   const [sendDetail, setSendDetail] = useState({});
-  const [{ userID , isHost }, dispatch] = useDataLayerValue();
+  const [{ userID, isHost, userDetail }, dispatch] = useDataLayerValue();
 
   useEffect(() => {
     return () => {
@@ -53,8 +53,9 @@ function MeetingPage(props) {
   }, []);
 
   useEffect(() => {
+    console.log(userID, userDetail);
     if (userDetails) startConnection();
-  }, [userDetails]);
+  }, []);
 
   const startDetect = () => {
     console.log(userID);
@@ -97,6 +98,15 @@ function MeetingPage(props) {
       setCamStatus(!camStatus);
     }
   };
+
+  const handleMyAudio = () => {
+    if (!displayStream) {
+      const { toggleVideoTrack } = socketInstance.current;
+      toggleVideoTrack({ video: camStatus, audio: !micStatus });
+      setCamStatus(!micStatus);
+    }
+  };
+
   const copyLink = (link) => {
     setwholeRoomID(link);
   };
@@ -147,7 +157,7 @@ function MeetingPage(props) {
         </div>
       )}
 
-      <div className="side__nav">
+      {/* <div className="side__nav">
         <span className="active">
           <VideocamIcon />
         </span>
@@ -157,39 +167,11 @@ function MeetingPage(props) {
         <span>
           <VideocamIcon />
         </span>
-      </div>
+      </div> */}
       {showVideo && (
         <div className="main__container">
           <div className="mini__nav">
-            <div className="option__section">
-              <div className="select__icon">
-                <div className="people">p</div>
-                <div className="person__count">
-                  <div>4</div>{" "}
-                  <svg
-                    className="arrow__icon"
-                    viewBox="0 0 17 19"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8.5 3.95837V15.0417"
-                      stroke="white"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M13.4582 9.5L8.49984 15.0417L3.5415 9.5"
-                      stroke="white"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </div>
-              </div>
-            </div>
+            <div className="option__section"></div>
 
             <CopyToClipboard
               text={wholeRoomID}
@@ -238,7 +220,7 @@ function MeetingPage(props) {
           )}
         </div>
 
-        {(showChart && isHost)  && (
+        {showChart && isHost && (
           <div
             className="chart__section"
             style={showChart ? { display: "grid" } : { display: "none" }}
@@ -256,7 +238,7 @@ function MeetingPage(props) {
           >
             <Chat
               socketInstance={socketInstance.current}
-              myDetails={userDetails}
+              myDetails={userDetail}
               messages={messages}
             />
           </div>
@@ -266,7 +248,7 @@ function MeetingPage(props) {
       {showVideo && (
         <div className="btn__section">
           <div className="controller__container">
-            <div>
+            <div onClick={handleMyAudio}>
               {micStatus ? (
                 <MicIcon className="mic__icon icon" />
               ) : (

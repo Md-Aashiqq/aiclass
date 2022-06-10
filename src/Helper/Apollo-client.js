@@ -1,29 +1,30 @@
-
-import { split, HttpLink } from '@apollo/client';
-import { getMainDefinition } from '@apollo/client/utilities';
-import { WebSocketLink } from '@apollo/client/link/ws';
-import { ApolloClient, InMemoryCache  , gql} from '@apollo/client';
+import { split, HttpLink } from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/client/link/ws";
+import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
 
 const httpLink = new HttpLink({
-  uri: 'https://aiclass-graphql-endpoint.herokuapp.com/'
+  // uri: 'https://aiclass-graphql-endpoint.herokuapp.com/'
+  uri: "http://localhost:4000/",
 });
 
 const wsLink = new WebSocketLink({
-  uri: 'ws://aiclass-graphql-endpoint.herokuapp.com/graphql',
+  // uri: "ws://aiclass-graphql-endpoint.herokuapp.com/graphql",
+  uri: "ws://localhost:4000/graphql",
   options: {
-    reconnect: true
-  }
+    reconnect: true,
+  },
 });
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return (
-      definition.kind === 'OperationDefinition' &&
-      definition.operation === 'subscription'
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
     );
   },
   wsLink,
-  httpLink,
+  httpLink
 );
 
 let emotionData = [];
@@ -35,13 +36,9 @@ class apolloClient {
     return (async () => {
       this.apollo_client = new ApolloClient({
         link: splitLink,
-        cache: new InMemoryCache()
+        cache: new InMemoryCache(),
       });
-
-      
-
     })();
-    
   }
 
   getEmotions() {
@@ -85,5 +82,5 @@ class apolloClient {
 }
 
 export function Apollo_Client() {
-  return ( client = new apolloClient());
+  return (client = new apolloClient());
 }

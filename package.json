@@ -12,6 +12,7 @@
     "apollo-boost": "^0.4.9",
     "axios": "^0.21.1",
     "chart.js": "^3.2.1",
+    "chokidar": "^3.5.3",
     "face-api.js": "^0.22.2",
     "firebase": "^8.6.1",
     "graphql": "^15.5.0",
@@ -29,7 +30,7 @@
     "web-vitals": "^1.1.1"
   },
   "scripts": {
-    "start": "serve -s build",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

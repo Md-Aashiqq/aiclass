@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useDataLayerValue } from "../../DataLayer";
 import "./style.css";
 
 function Chat(props) {
   const [chatText, setChatText] = useState("");
+  const [{ userID, isHost, userDetail }, dispatch] = useDataLayerValue();
 
   const handleChatText = (event) => {
     const { value } = event.target;
@@ -10,6 +12,7 @@ function Chat(props) {
   };
 
   const handleSendText = (event) => {
+    console.log(userDetail);
     if (!(chatText.length > 0)) return;
     if (event.type === "keyup" && event.key !== "Enter") {
       return;
@@ -19,8 +22,10 @@ function Chat(props) {
         message: chatText,
         timestamp: new Date(),
       },
-      userData: { ...props.myDetails },
+
+      userData: { name: userDetail },
     };
+    console.log(messageDetails);
     props.socketInstance.boradcastMessage(messageDetails);
     setChatText("");
   };
@@ -45,7 +50,7 @@ function Chat(props) {
           placeholder="Type Message"
           onChange={handleChatText}
         />
-        <div onClick={handleSendText}> "S" </div>
+        <div onClick={handleSendText}> send </div>
       </div>
     </div>
   );

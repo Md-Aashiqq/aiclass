@@ -7,14 +7,14 @@
 .meeting__container {
   height: 100vh;
   display: grid;
-  grid-template-columns: 6% 64% 30%;
+  grid-template-columns: 4% 66% 30%;
   grid-template-rows: 10% 80% 10%;
   grid-template-areas:
     "header header header"
     "sidenav main__content chart"
     "btn__grp btn__grp chart";
-  background: #21242b;
-  color: #ffffff;
+  background: #EFF0F2;
+  /* color: #ffffff; */
 }
 
 .menu__icon {
@@ -24,7 +24,7 @@
 .meeting__header {
   grid-area: header;
   padding: 1rem;
-  background-color: #000000;
+  background-color: #243122;
   color: #10b664;
   display: flex;
   justify-content: space-between;
@@ -35,7 +35,9 @@
   display: flex;
   flex-direction: column;
   color: #ffffff;
+  /* background-color: red; */
   padding: 10px;
+  border-right: 3px solid #cebcbc;
   justify-content: space-evenly;
   align-items: center;
 }
@@ -63,7 +65,7 @@ span.active {
 
 .main__container {
   grid-area: main__content;
-  background-color: #000000;
+  background-color: #A0A0A2;
   margin: 3%;
   border-radius: 23px;
   padding-top: 4%;
@@ -91,6 +93,7 @@ span.active {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* background-color: red; */
 }
 .mini__nav .invite__link {
   color: #10b664;
@@ -136,12 +139,6 @@ span.active {
 }
 
 .option__section {
-  background: #000000;
-  padding: 0.4rem;
-  border: 2px solid #fff;
-  border-radius: 10px;
-  width: 150px;
-  text-align: center;
 }
 .option__section .select__icon {
   display: flex;
@@ -159,14 +156,14 @@ span.active {
 }
 .vidoe__section {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 200px);
   gap: 10px;
-  grid-template-rows: repeat(2, 1fr);
   padding: 15px;
 }
 
+
 .vidoe__section div {
-  height: 250px;
+  height: 200px;
   background-color: #21242b;
   border-radius: 10px;
 }

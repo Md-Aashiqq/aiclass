@@ -1,7 +1,7 @@
 .container {
   /* height: 100vh; */
   min-height: 90vh;
-  background: #21242b;
+  background: #EFF0F2;
   padding: 0px 8%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -19,7 +19,7 @@
 .left__container span {
   /* display: block; */
   display: block;
-  color: #fff;
+  color: #A65739;
   font-size: 30px;
 }
 
