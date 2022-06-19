@@ -2,10 +2,13 @@ import io from "socket.io-client";
 import Peer from "peerjs";
 import { detectFaces } from "./FaceDetect";
 
+import { toast } from "react-toastify";
+
 const initializePeerConnection = () => {
   return new Peer();
 };
-const websocket = "https://aiclass-backend.herokuapp.com/";
+const websocket = "https://aiclass-backend-01.herokuapp.com/";
+// const websocket = "http://localhost:3001";
 
 let socketInstance = null;
 let peers = {};
@@ -51,9 +54,14 @@ class Connection {
       this.removeVideo(userID);
     });
     this.socket.on("new-broadcast-messsage", (data) => {
+      console.log("new broadcast message received", data);
       this.message.push(data);
       this.settings.updateInstance("message", this.message);
       //  toast.info(`${data.message.message} By ${data.userData.name}`);
+    });
+    this.socket.on("alert", (data) => {
+      toast.info(`${data.data} become tried`);
+      console.log("sent-alert one two");
     });
     this.socket.on("disconnect", () => {
       console.log("socket disconnected --");
@@ -140,8 +148,8 @@ class Connection {
       if (this.myID === createObj.id) video.muted = true;
       videoContainer.appendChild(video);
       // TODOs
-      console.log(this.socket);
-      detectFaces(video, this.myID);
+      // console.log();
+      detectFaces(video, this.myID, this.socket);
       roomContainer.appendChild(videoContainer);
     } else {
       document.getElementById(createObj.id).srcObject = createObj.stream;

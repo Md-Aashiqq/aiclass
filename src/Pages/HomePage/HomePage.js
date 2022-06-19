@@ -29,8 +29,10 @@ function HomePage(props) {
 
     dispatch({ type: "SETISHOST", value: true });
 
+    const url = "https://aiclass-backend-01.herokuapp.com/join";
+    // const url = "http://localhost:3001";
     axios
-      .get("https://aiclass-backend.herokuapp.com/join")
+      .get(url)
       .then(function (response) {
         // handle success
         console.log(response);

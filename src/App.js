@@ -12,7 +12,8 @@ import {
   gql,
   ApolloProvider,
 } from "@apollo/client";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const httpLink = new HttpLink({
   uri: "https://aiclass-graphql-endpoint.herokuapp.com/",
   // uri: "http://localhost:4000/",
@@ -50,6 +51,7 @@ function App() {
         <BrowserRouter>
           <div className="App">
             <AppRouter />
+            <ToastContainer />
           </div>
         </BrowserRouter>
       </DataLayer>
